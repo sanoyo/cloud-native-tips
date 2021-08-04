@@ -25,4 +25,3 @@ jobs:
         run: |
           docker build -t yosano/techtrends .
           docker push yosano/techtrends
-      
