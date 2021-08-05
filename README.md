@@ -1,1 +1,1 @@
-# cloud-native-practice
+# cloud-native-tips
