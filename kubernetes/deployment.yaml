@@ -1,0 +1,39 @@
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: techtrends
+  name: techtrends
+  namespace: sandbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: techtrends
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: techtrends
+    spec:
+      containers:
+      - image: yosano/techtrends:latest
+        name: techtrends
+        ports:
+        - containerPort: 3111
+        resources:
+          limits:
+            memory: 128Mi
+            cpu: 500m
+          requests:
+            memory: 64Mi
+            cpu: 250m
+        readinessProbe:
+          httpGet:
+           path: /healthz
+           port: 3111
+        livenessProbe:
+          httpGet:
+           path: /healthz
+           port: 3111
