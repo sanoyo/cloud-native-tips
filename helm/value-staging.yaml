@@ -1,0 +1,16 @@
+namespace:
+  name: staging
+
+deployment:
+  replicaCount: 3
+  resources:
+    requests:
+      memory: 90Mi
+      CPU: 300m
+    limits: 
+      memory: 128Mi
+      CPU: 500m
+  containerPort: 3111
+
+service:
+  port: 5111
