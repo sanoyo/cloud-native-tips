@@ -10,7 +10,7 @@ spec:
   ports:
   - port: {{ .Values.service.port }}
     protocol: {{ .Values.service.protocol }}
-    targetPort: {{ .Values.service.3111 }}
+    targetPort: {{ .Values.service.targetPort }}
   selector:
     app: techtrends
 status:
