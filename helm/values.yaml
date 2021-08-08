@@ -18,10 +18,10 @@ deployment:
   containerPort: 3111
   livenessProbe:
     path: /healthz
-    containerPort: 3111
+    port: 3111
   readinessProbe:
     path: /healthz
-    containerPort: 3111
+    port: 3111
 
 service:
   port: 4111

@@ -6,34 +6,32 @@ metadata:
   name: techtrends
   namespace: sandbox
 spec:
-  replicas: 1
+  replicas: {{ .Values.deployment.replicaCount }}
   selector:
     matchLabels:
       app: techtrends
-  strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: techtrends
     spec:
       containers:
-      - image: yosano/techtrends:latest
+      - image: {{ .Values.image.repository }}:latest
         name: techtrends
         ports:
-        - containerPort: 3111
+        - containerPort: {{ .Values.deployment.resources.containerPort }}
         resources:
-          limits:
-            memory: 128Mi
-            cpu: 500m
           requests:
-            memory: 64Mi
-            cpu: 250m
-        readinessProbe:
-          httpGet:
-           path: /healthz
-           port: 3111
+            memory: {{ .Values.deployment.resources.requests.memory }}
+            cpu: {{ .Values.deployment.resources.requests.CPU }}
+          limits:
+            memory: {{ .Values.deployment.resources.limits.memory }}
+            cpu: {{ .Values.deployment.resources.limits.CPU }}
         livenessProbe:
           httpGet:
-           path: /healthz
-           port: 3111
+           path: {{ .Values.deployment.livenessProbe.path }}
+           port: {{ .Values.deployment.livenessProbe.port }}
+        readinessProbe:
+          httpGet:
+           path: {{ .Values.deployment.readinessProbe.path }}
+           port: {{ .Values.deployment.readinessProbe.port }}

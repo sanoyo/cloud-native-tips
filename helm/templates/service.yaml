@@ -8,9 +8,9 @@ metadata:
   namespace: sandbox
 spec:
   ports:
-  - port: 4111
-    protocol: TCP
-    targetPort: 3111
+  - port: {{ .Values.service.port }}
+    protocol: {{ .Values.service.protocol }}
+    targetPort: {{ .Values.service.3111 }}
   selector:
     app: techtrends
 status:
