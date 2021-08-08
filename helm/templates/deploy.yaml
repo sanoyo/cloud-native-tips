@@ -20,7 +20,7 @@ spec:
       - image: {{ .Values.image.repository }}:latest
         name: techtrends
         ports:
-        - containerPort: {{ .Values.deployment.resources.containerPort }}
+        - containerPort: {{ .Values.deployment.containerPort }}
         resources:
           requests:
             memory: {{ .Values.deployment.resources.requests.memory }}
