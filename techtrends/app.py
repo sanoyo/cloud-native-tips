@@ -2,6 +2,8 @@ import sqlite3
 
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
+import logging
+
 
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
@@ -27,6 +29,13 @@ def get_post(post_id):
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 
+# define log level
+app.logger.debug('DEBUG')
+app.logger.info('INFO')
+app.logger.warning('WARNING')
+app.logger.error('ERROR')
+app.logger.critical('CRITICAL')
+
 # Define the main route of the web application
 
 
@@ -35,7 +44,6 @@ def index():
     connection = get_db_connection()
     posts = connection.execute('SELECT * FROM posts').fetchall()
     connection.close()
-    app.logger.info('Article is retrieved')
     return render_template('index.html', posts=posts)
 
 # Define how each individual article is rendered
@@ -46,8 +54,10 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
+        app.logger.debug('404 returned')
         return render_template('404.html'), 404
     else:
+        app.logger.debug('%s is retrieved', post[2])
         return render_template('post.html', post=post)
 
 # Define the About Us page
@@ -55,7 +65,7 @@ def post(post_id):
 
 @app.route('/about')
 def about():
-    app.logger.info('About Us')
+    app.logger.debug('About Us')
     return render_template('about.html')
 
 # Define the post creation functionality
@@ -75,6 +85,7 @@ def create():
                                (title, content))
             connection.commit()
             connection.close()
+            app.logger.debug('%s is created', title)
 
             return redirect(url_for('index'))
 
@@ -93,13 +104,16 @@ def healthz():
 
 @app.route('/metrics')
 def metrics():
+    db_cn = 0
     connection = get_db_connection()
-    number = connection.execute('SELECT count(*) FROM posts').fetchone()
-    print(number)
+    count = connection.execute('SELECT count(*) FROM posts').fetchone()
+    count = list(count)[0]
+    db_cn += 1
     connection.close()
-    return render_template('metrics.html', number=number)
+    return render_template('metrics.html', count=count, db_cn=db_cn)
 
 
 # start the application on port 3111
 if __name__ == "__main__":
+    logging.basicConfig(filename='app.log', level=logging.DEBUG)
     app.run(host='0.0.0.0', port='3111')

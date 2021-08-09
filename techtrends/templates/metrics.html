@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
+
 {% block content %}
-    <h2>db_connection_count: 1</h2>
-    <h2>post_count: {% number %}</h2>
+    <h2>db_connection_count: {{ db_cn }}</h2>
+    <h2>post_count: {{ count }}</h2>
 {% endblock %}
